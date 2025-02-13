@@ -1,6 +1,7 @@
 package database
 
 import (
+	"RemitlyTask/src/models"
 	"log"
 	"os"
 	"sync"
@@ -32,5 +33,6 @@ func init() {
 		if err != nil {
 			log.Fatal("Failed to connect to database:", err)
 		}
+		DB.AutoMigrate(&models.SwiftCode{})
 	})
 }
