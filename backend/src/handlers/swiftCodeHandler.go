@@ -79,20 +79,20 @@ func (h *SwiftCodeHandler) GetCodesByCountry(c *gin.Context) {
 		return
 	}
 
-	countryResponse, ok := response.(models.CountryResponse)
+	SwiftCodeCountry, ok := response.(models.SwiftCodeCountry)
 	if !ok {
 		log.Println("Invalid response type")
 		c.JSON(http.StatusInternalServerError, gin.H{"message": "Invalid response type"})
 		return
 	}
 
-	if countryResponse.CountryName == "" {
+	if SwiftCodeCountry.CountryName == "" {
 		log.Println("ISO2 code: " + iso2 + " is not valid.")
 		c.JSON(http.StatusInternalServerError, gin.H{"message": "ISO2 code " + iso2 + " is not valid."})
 		return
 	}
 
-	c.JSON(http.StatusOK, countryResponse)
+	c.JSON(http.StatusOK, SwiftCodeCountry)
 }
 
 func (h *SwiftCodeHandler) AddNewSwiftCode(c *gin.Context) {

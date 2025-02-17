@@ -3,18 +3,29 @@ services:
     image: postgres:17-alpine
     ports:
       - '5432:5432'
-    
     env_file:
       - ./backend/db.env
-
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres"]
       interval: 10s
       timeout: 5s
       retries: 5
-      
     volumes:
-      - ./data:/docker-entrypoint-initdb.d
+      - ./backend/data/db:/docker-entrypoint-initdb.d
+
+  test_db:
+    image: postgres:17-alpine
+    ports:
+      - '5433:5432'
+    env_file:
+      - ./backend/db.env
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    volumes:
+      - ./backend/data/test_db:/docker-entrypoint-initdb.d
 
   backend:
     depends_on:
@@ -25,3 +36,14 @@ services:
       dockerfile: Dockerfile
     ports:
       - "8080:8080"
+
+  tests:
+    depends_on:
+      test_db:
+        condition: service_healthy
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.test
+    environment:
+      - DB_HOST=test_db
+      - DB_PORT=5432

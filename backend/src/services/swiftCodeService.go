@@ -24,13 +24,13 @@ func (s *SwiftCodeService) GetHeadquarterDetails(swiftCodePrefix string) (interf
 	}
 
 	var headquarter *models.SwiftCode
-	var branches []models.BankDetails
+	var branches []models.SwiftCodeBank
 
 	for _, code := range swiftCodes {
 		if code.IsHeadquarter() {
 			headquarter = &code
 		} else {
-			branches = append(branches, models.BankDetails{
+			branches = append(branches, models.SwiftCodeBank{
 				Address:       code.Address,
 				BankName:      code.Name,
 				CountryISO2:   code.CountryISO2,
@@ -44,7 +44,7 @@ func (s *SwiftCodeService) GetHeadquarterDetails(swiftCodePrefix string) (interf
 		return nil, nil
 	}
 
-	detailedResponse := models.DetailsResponse{
+	detailedResponse := models.SwiftCodeDetails{
 		Address:       headquarter.Address,
 		BankName:      headquarter.Name,
 		CountryISO2:   headquarter.CountryISO2,
@@ -67,7 +67,7 @@ func (s *SwiftCodeService) GetBranchDetails(swiftCode string) (interface{}, erro
 		return nil, nil
 	}
 
-	response := models.BranchResponse{
+	response := models.SwiftCodeBranch{
 		Address:       branch.Address,
 		BankName:      branch.Name,
 		CountryISO2:   branch.CountryISO2,
@@ -90,10 +90,10 @@ func (s *SwiftCodeService) GetSwiftCodesByCountry(iso2 string) (interface{}, err
 		return nil, err
 	}
 
-	var branchResponses []models.BankDetails
+	var SwiftCodeBranchs []models.SwiftCodeBank
 
 	for _, code := range swiftCodes {
-		branchResponses = append(branchResponses, models.BankDetails{
+		SwiftCodeBranchs = append(SwiftCodeBranchs, models.SwiftCodeBank{
 			Address:       code.Address,
 			BankName:      code.Name,
 			CountryISO2:   code.CountryISO2,
@@ -102,10 +102,10 @@ func (s *SwiftCodeService) GetSwiftCodesByCountry(iso2 string) (interface{}, err
 		})
 	}
 
-	return models.CountryResponse{
+	return models.SwiftCodeCountry{
 		CountryISO2: iso2,
 		CountryName: countryName,
-		SwiftCodes:  branchResponses,
+		SwiftCodes:  SwiftCodeBranchs,
 	}, nil
 }
 
