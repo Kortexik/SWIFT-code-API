@@ -48,4 +48,4 @@ services:
       - DB_HOST=test_db
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-    entrypoint: ["./closeTestDbAfterTests.sh"]
+    entrypoint: ["./backend/closeTestDbAfterTests.sh"]
