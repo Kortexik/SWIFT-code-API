@@ -68,24 +68,25 @@ This project is an implementation of a task by Remitly using Go and the Gin fram
     - **Example response (`/v1/swift-codes/country/PL`)**
       ```json
           {
-        "countryISO2": "PL",
-        "countryName": "POLAND",
-        "swiftCodes": [
-            {
-                "address": "STRZEGOMSKA 42C  WROCLAW, DOLNOSLASKIE, 53-611",
-                "bankName": "SANTANDER CONSUMER BANK SPOLKA AKCYJNA",
-                "countryISO2": "PL",
-                "isHeadquarter": true,
-                "swiftCode": "AIPOPLP1XXX"
-            },
-            {
-                "address": "  WARSZAWA, MAZOWIECKIE",
-                "bankName": "ALIOR BANK SPOLKA AKCYJNA",
-                "countryISO2": "PL",
-                "isHeadquarter": false,
-                "swiftCode": "ALBPPLP1BMW"
-            },
-              ...
+            "countryISO2": "PL",
+            "countryName": "POLAND",
+            "swiftCodes": [
+                {
+                    "address": "STRZEGOMSKA 42C  WROCLAW, DOLNOSLASKIE, 53-611",
+                    "bankName": "SANTANDER CONSUMER BANK SPOLKA AKCYJNA",
+                    "countryISO2": "PL",
+                    "isHeadquarter": true,
+                    "swiftCode": "AIPOPLP1XXX"
+                },
+                {
+                    "address": "  WARSZAWA, MAZOWIECKIE",
+                    "bankName": "ALIOR BANK SPOLKA AKCYJNA",
+                    "countryISO2": "PL",
+                    "isHeadquarter": false,
+                    "swiftCode": "ALBPPLP1BMW"
+                },
+                  ...
+          }
       ```
 
 - **Delete Swift Code**
