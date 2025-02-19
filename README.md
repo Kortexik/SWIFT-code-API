@@ -1,6 +1,6 @@
 # Remitly Task
 
-This project is an implementation of a task by Remitly using Go and the Gin framework. It sets up a PostgreSQL database with initial data from an SQL file and creates a Gin server to handle API requests. The project includes integration and unit tests to ensure the system works as expected.
+This project is an implementation of a task by Remitly using Go and the Gin framework. It sets up a PostgreSQL database with initial data from csv file and creates a Gin server to handle API requests. The project includes integration and unit tests to ensure the system works as expected.
 
 ## Project Structure
 
