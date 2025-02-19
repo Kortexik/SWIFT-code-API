@@ -85,7 +85,7 @@ This project is an implementation of a task by Remitly using Go and the Gin fram
                     "isHeadquarter": false,
                     "swiftCode": "ALBPPLP1BMW"
                 },
-                  ...
+                  "..."
           }
       ```
 
