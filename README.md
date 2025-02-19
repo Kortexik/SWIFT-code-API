@@ -42,6 +42,17 @@ This project is an implementation of a task by Remitly using Go and the Gin fram
 
 - **Get Swift Code Details**
     - **URL:** `GET /v1/swift-codes/:swift-code`
+    - **Example response**
+      ```json
+            {
+                "address": "TEST ADDRESS",
+                "bankName": "TEST BANK",
+                "countryISO2": "PL",
+                "countryName": "POLAND",
+                "isHeadquarter": false,
+                "swiftCode": "TESTTESTTES"
+            }
+      ```
 
 - **Get Swift Codes by Country**
     - **URL:** `GET /v1/swift-codes/country/:ISO2`
