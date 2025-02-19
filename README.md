@@ -42,16 +42,25 @@ This project is an implementation of a task by Remitly using Go and the Gin fram
 
 - **Get Swift Code Details**
     - **URL:** `GET /v1/swift-codes/:swift-code`
-    - **Example response**
+    - **Example response (`/v1/swift-codes/ALBPPLPWXXX`)**
       ```json
-            {
-                "address": "TEST ADDRESS",
-                "bankName": "TEST BANK",
-                "countryISO2": "PL",
-                "countryName": "POLAND",
-                "isHeadquarter": false,
-                "swiftCode": "TESTTESTTES"
-            }
+        {
+            "address": "LOPUSZANSKA BUSINESS PARK LOPUSZANSKA 38 D WARSZAWA, MAZOWIECKIE, 02-232",
+            "bankName": "ALIOR BANK SPOLKA AKCYJNA",
+            "countryISO2": "PL",
+            "countryName": "POLAND",
+            "isHeadquarter": true,
+            "swiftCode": "ALBPPLPWXXX",
+            "branches": [
+                {
+                    "address": "LOPUSZANSKA BUSINESS PARK LOPUSZANSKA 38 D WARSZAWA, MAZOWIECKIE, 02-232",
+                    "bankName": "ALIOR BANK SPOLKA AKCYJNA",
+                    "countryISO2": "PL",
+                    "isHeadquarter": false,
+                    "swiftCode": "ALBPPLPWCUS"
+                }
+            ]
+        }
       ```
 
 - **Get Swift Codes by Country**
