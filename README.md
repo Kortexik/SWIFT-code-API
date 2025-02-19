@@ -4,7 +4,7 @@ This project is an implementation of a task by Remitly using Go and the Gin fram
 
 ## Project Structure
 
-## How to Run (Locally)
+## How to Run
 
 1. Clone the repository to your local machine:
     ```sh
