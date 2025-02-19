@@ -35,6 +35,10 @@ This project is an implementation of a task by Remitly using Go and the Gin fram
             "swiftCode": "TESTTESTTES"
         }
         ```
+    - **Example response**
+        ```json
+            "message": "TESTTESTTES has been added to the database."
+        ```
 
 - **Get Swift Code Details**
     - **URL:** `GET /v1/swift-codes/:swift-code`
