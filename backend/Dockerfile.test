@@ -1,6 +1,6 @@
 FROM golang:1.23.2-alpine
 
-RUN apk add --no-cache curl dos2unix
+RUN apk add --no-cache curl
 
 WORKDIR /backend
 
@@ -9,7 +9,6 @@ RUN go mod download
 
 COPY . .
 
-RUN dos2unix ./closeTestDbAfterTests.sh
 RUN chmod +x ./closeTestDbAfterTests.sh
 
 # The CMD is the entrypoint in docker compose
