@@ -1,15 +1,16 @@
-package tests
+package integrationTests
 
 import (
 	"RemitlyTask/src/models"
+	"RemitlyTask/tests/testHelpers"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
 )
 
 func TestDatabaseSetup(t *testing.T) {
-	db := setupTestDB(t)
-	defer cleanupTestDB(t, db)
+	db := testHelpers.SetupTestDB(t)
+	defer testHelpers.CleanupTestDB(t, db)
 
 	sqlDB, err := db.DB()
 	assert.NoError(t, err)

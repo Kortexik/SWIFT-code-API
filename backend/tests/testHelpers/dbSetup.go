@@ -1,4 +1,4 @@
-package tests
+package testHelpers
 
 import (
 	"RemitlyTask/src/models"
@@ -11,8 +11,8 @@ import (
 	"gorm.io/gorm"
 )
 
-func setupTestDB(t *testing.T) *gorm.DB {
-	err := godotenv.Load("../db.env")
+func SetupTestDB(t *testing.T) *gorm.DB {
+	err := godotenv.Load("../../db.env")
 	if err != nil {
 		log.Fatal("Error loading .env file")
 	}
@@ -20,7 +20,7 @@ func setupTestDB(t *testing.T) *gorm.DB {
 	user := os.Getenv("POSTGRES_USER")
 	password := os.Getenv("POSTGRES_PASSWORD")
 	databaseName := os.Getenv("POSTGRES_DB")
-	port := "5433"
+	port := os.Getenv("DB_PORT")
 
 	dsn := "host=" + host + " user=" + user + " password=" + password + " dbname=" + databaseName + " port=" + port
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
@@ -33,7 +33,7 @@ func setupTestDB(t *testing.T) *gorm.DB {
 	return db
 }
 
-func cleanupTestDB(t *testing.T, db *gorm.DB) {
+func CleanupTestDB(t *testing.T, db *gorm.DB) {
 	err := db.Migrator().DropTable(&models.SwiftCode{})
 	if err != nil {
 		t.Fatalf("Failed to clean up test database: %v", err)

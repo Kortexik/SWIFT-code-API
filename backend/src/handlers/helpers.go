@@ -1,6 +1,8 @@
 package handlers
 
-import "github.com/gin-gonic/gin"
+import (
+	"github.com/gin-gonic/gin"
+)
 
 func parseSwiftCode(swiftCode string) (prefix, suffix string) {
 	return swiftCode[:len(swiftCode)-3], swiftCode[len(swiftCode)-3:]

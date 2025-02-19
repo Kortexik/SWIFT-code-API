@@ -3,13 +3,23 @@ package services
 import (
 	"RemitlyTask/src/models"
 	"RemitlyTask/src/repositories"
+	"strings"
 )
 
-type SwiftCodeService struct {
-	repo *repositories.SwiftCodeRepository
+type ISwiftCodeService interface {
+	GetHeadquarterDetails(swiftCodePrefix string) (interface{}, error)
+	GetBranchDetails(swiftCode string) (interface{}, error)
+	GetSwiftCodesByCountry(iso2 string) (interface{}, error)
+	AddSwiftCode(newCode *models.SwiftCode) error
+	DeleteSwiftCode(swiftCode string) error
+	GetCountryName(iso2 string) (string, error)
 }
 
-func NewSwiftCodeService(repo *repositories.SwiftCodeRepository) *SwiftCodeService {
+type SwiftCodeService struct {
+	repo repositories.ISwiftCodeRepository
+}
+
+func NewSwiftCodeService(repo repositories.ISwiftCodeRepository) ISwiftCodeService {
 	return &SwiftCodeService{repo: repo}
 }
 
@@ -110,9 +120,15 @@ func (s *SwiftCodeService) GetSwiftCodesByCountry(iso2 string) (interface{}, err
 }
 
 func (s *SwiftCodeService) AddSwiftCode(newCode *models.SwiftCode) error {
+	newCode.CountryISO2 = strings.ToUpper(newCode.CountryISO2)
+	newCode.CountryName = strings.ToUpper(newCode.CountryName)
 	return s.repo.Create(newCode)
 }
 
 func (s *SwiftCodeService) DeleteSwiftCode(swiftCode string) error {
 	return s.repo.Delete(swiftCode)
+}
+
+func (s *SwiftCodeService) GetCountryName(iso2 string) (string, error) {
+	return s.repo.FindCountryNameByISO2(iso2)
 }

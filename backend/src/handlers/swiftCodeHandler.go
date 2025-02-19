@@ -13,12 +13,16 @@ import (
 )
 
 type SwiftCodeHandler struct {
-	service *services.SwiftCodeService
+	service services.ISwiftCodeService
 }
 
 func NewSwiftCodeHandler(db *gorm.DB) *SwiftCodeHandler {
 	repo := repositories.NewSwiftCodeRepository(db)
 	service := services.NewSwiftCodeService(repo)
+	return &SwiftCodeHandler{service: service}
+}
+
+func NewSwiftCodeHandlerByService(service services.ISwiftCodeService) *SwiftCodeHandler {
 	return &SwiftCodeHandler{service: service}
 }
 
@@ -96,7 +100,7 @@ func (h *SwiftCodeHandler) GetCodesByCountry(c *gin.Context) {
 }
 
 func (h *SwiftCodeHandler) AddNewSwiftCode(c *gin.Context) {
-	var newSwiftCode models.SwiftCode
+	var newSwiftCode models.SwiftCodeBranch
 
 	if err := c.ShouldBindJSON(&newSwiftCode); err != nil {
 		log.Println("Error binding JSON: ", err)
@@ -104,14 +108,65 @@ func (h *SwiftCodeHandler) AddNewSwiftCode(c *gin.Context) {
 		return
 	}
 
-	err := h.service.AddSwiftCode(&newSwiftCode)
+	if len(newSwiftCode.CountryISO2) != 2 {
+		log.Println("Error inserting new code: this iso2 code does not exist.")
+		c.JSON(http.StatusBadRequest, gin.H{"message": ErrFailedToInsert + "this iso2 code: " + newSwiftCode.CountryISO2 + " does not exist."})
+		return
+	}
+
+	if len(newSwiftCode.SwiftCode) != 8 && len(newSwiftCode.SwiftCode) != 11 {
+		log.Println("Error inserting new code: invalid swift code length")
+		c.JSON(http.StatusBadRequest, gin.H{"message": ErrFailedToInsert + newSwiftCode.SwiftCode + " swift code must be 8 or 11 characters long."})
+		return
+	}
+
+	if (!strings.HasSuffix(newSwiftCode.SwiftCode, "XXX") && newSwiftCode.IsHeadquarter) || (strings.HasSuffix(newSwiftCode.SwiftCode, "XXX") && !newSwiftCode.IsHeadquarter) {
+		log.Println("Error inserting new code: isHeadquarter does not match the suffix of swiftcode.")
+		c.JSON(http.StatusBadRequest, gin.H{"message": ErrFailedToInsert + "isHeadquarter does not match the suffix of swiftcode."})
+		return
+	}
+
+	if newSwiftCode.Address == "" {
+		log.Println("Error inserting new code: address can't be empty")
+		c.JSON(http.StatusBadRequest, gin.H{"message": ErrFailedToInsert + "address can't be empty."})
+		return
+	}
+
+	countryName, err := h.service.GetCountryName(newSwiftCode.CountryISO2)
+	if err != nil {
+		log.Println("Error checking country name from iso2")
+		c.JSON(http.StatusBadRequest, gin.H{"message": ErrFailedToInsert + "invalid ISO2 code."})
+		return
+	}
+
+	if !strings.EqualFold(newSwiftCode.CountryName, countryName) && countryName != "" {
+		log.Println("Error inserting new code: iso2 code must match with given country.")
+		c.JSON(http.StatusBadRequest, gin.H{"message": ErrFailedToInsert + "iso2 code must match with given country."})
+		return
+	}
+
+	existingCode, err := h.service.GetBranchDetails(newSwiftCode.SwiftCode)
+	if err == nil && existingCode != nil {
+		log.Println("Error inserting new code: swift code already exists")
+		c.JSON(http.StatusBadRequest, gin.H{"message": ErrFailedToInsert + "swift code already exists"})
+		return
+	}
+
+	newValidatedCode := models.SwiftCode{
+		Address:     newSwiftCode.Address,
+		Name:        newSwiftCode.BankName,
+		CountryISO2: newSwiftCode.CountryISO2,
+		SwiftCode:   newSwiftCode.SwiftCode,
+		CountryName: newSwiftCode.CountryName,
+	}
+
+	err = h.service.AddSwiftCode(&newValidatedCode)
 	if err != nil {
 		log.Println("Error inserting new code: ", err)
 		c.JSON(http.StatusBadRequest, gin.H{"message": ErrFailedToInsert + newSwiftCode.SwiftCode})
 		return
 	}
-
-	c.JSON(http.StatusOK, gin.H{"message": newSwiftCode.SwiftCode + " has been added to database."})
+	c.JSON(http.StatusOK, gin.H{"message": newSwiftCode.SwiftCode + " has been added to the database."})
 }
 
 func (h *SwiftCodeHandler) DeleteCode(c *gin.Context) {
@@ -120,7 +175,7 @@ func (h *SwiftCodeHandler) DeleteCode(c *gin.Context) {
 	err := h.service.DeleteSwiftCode(swiftCode)
 	if err != nil {
 		log.Printf("Error deleting code %s: %v", swiftCode, err)
-		c.JSON(http.StatusBadRequest, gin.H{"message": ErrFailedToDelete + ", given: " + swiftCode})
+		c.JSON(http.StatusNotFound, gin.H{"message": ErrFailedToDelete + " " + err.Error()})
 		return
 	}
 
