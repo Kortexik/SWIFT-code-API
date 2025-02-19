@@ -20,17 +20,6 @@ This project is an implementation of a task by Remitly using Go and the Gin fram
     ```
 4. Once the containers are up and running, you can access the API at `http://localhost:8080/v1/swift-codes` using your browser or Postman.
 
-## How to Run Tests ??????
-
-1. Ensure the Docker containers are running:
-    ```sh
-    docker compose up --build
-    ```
-2. Run the tests:
-    ```sh
-    docker compose run tests
-    ```
-
 ## API Endpoints
 
 - **Add New Swift Code**
