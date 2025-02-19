@@ -92,3 +92,7 @@ This project is an implementation of a task by Remitly using Go and the Gin fram
 
 - **Delete Swift Code**
     - **URL:** `DELETE /v1/swift-codes/:swift-code`
+      ```json
+          "message": "TESTTESTTES was removed."
+      ```
+      
