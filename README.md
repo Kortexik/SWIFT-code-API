@@ -8,7 +8,7 @@ This project is an implementation of a task by Remitly using Go and the Gin fram
 
 1. Clone the repository to your local machine:
     ```sh
-    git clone https://github.com/Kortexik/RemitlyTask
+    git clone https://github.com/Kortexik/SWIFTCodeAPI.git
     ```
 2. Navigate to the project directory:
     ```sh
