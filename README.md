@@ -12,7 +12,7 @@ This project is an implementation of a task by Remitly using Go and the Gin fram
     ```
 2. Navigate to the project directory:
     ```sh
-    cd RemitlyTask
+    cd SWIFTCodeAPI
     ```
 3. Build and start the Docker containers:
     ```sh
